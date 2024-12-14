@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:29:04 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/14 21:57:10 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/14 22:31:13 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,61 @@
 
 char	*get_next_line(int fd)
 {
-	static char*	buffer;
-	char*	line;
-	int		i;
-	int		bytes_read;
+    static char*	buffer;
+    char*	line;
+    int		i;
+    int		bytes_read;
 
-	if (!buffer)
-		buffer = (char *)malloc(BUFFER_SIZE + 1);
+    if (!buffer)
+        buffer = (char *)malloc(BUFFER_SIZE + 1);
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || !buffer)
-		return (NULL);
+    if (fd < 0 || BUFFER_SIZE <= 0 || !buffer)
+        return (NULL);
 
-	line = (char *)malloc(1);
-	line[0] = '\0';
+    line = (char *)malloc(1);
+    line[0] = '\0';
 
-	if (ft_strlen(buffer) == 0)
-	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		buffer[bytes_read] = '\0';
-	}
-	while (bytes_read > 0)
-	{
-		i = 0;
-		while (i < bytes_read)
-		{
-			if (buffer[i] == '\n')
-			{
-				line = ft_strjoin(line, buffer, i);
-				buffer = ft_substr(buffer, i + 1, bytes_read - i - 1);
-				return (line);
-			}
-			i++;
-		}
-		line = ft_strjoin(line, buffer, bytes_read);
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		buffer[bytes_read] = '\0';
-	}
-	if (line[0] == '\0')
-	{
-		free(line);
-		return (NULL);
-	}
-	return (line);
+    if (ft_strlen(buffer) == 0)
+    {
+        bytes_read = read(fd, buffer, BUFFER_SIZE);
+        if (bytes_read <= 0)
+        {
+            free(buffer);
+            buffer = NULL;
+			free(line);
+            return (NULL);
+        }
+        buffer[bytes_read] = '\0';
+    }
+    while (bytes_read > 0)
+    {
+        i = 0;
+        while (i < bytes_read)
+        {
+            if (buffer[i] == '\n')
+            {
+                line = ft_strjoin(line, buffer, i);
+                char *temp = buffer;
+                buffer = ft_substr(buffer, i + 1, bytes_read - i - 1);
+                free(temp);
+                return (line);
+            }
+            i++;
+        }
+        line = ft_strjoin(line, buffer, bytes_read);
+        bytes_read = read(fd, buffer, BUFFER_SIZE);
+        if (bytes_read <= 0)
+        {
+            free(buffer);
+            buffer = NULL;
+            break;
+        }
+        buffer[bytes_read] = '\0';
+    }
+    if (line[0] == '\0')
+    {
+        free(line);
+        return (NULL);
+    }
+    return (line);
 }
