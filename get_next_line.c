@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:29:04 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/15 11:51:09 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/15 12:30:34 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_next_line(int fd)
 {
     static char*	buffer;
     char*	line;
-    int		i;
+    int		i;  
     int		bytes_read;
 
     if (!buffer)
@@ -48,21 +48,13 @@ char	*get_next_line(int fd)
             if (buffer[i] == '\n')
             {
                 line = ft_strjoin(line, buffer, i+1);
-                char *temp = buffer;
                 buffer = ft_substr(buffer, i + 1, bytes_read - i - 1);
-                free(temp);
                 return (line);
             }
             i++;
         }
         line = ft_strjoin(line, buffer, bytes_read);
         bytes_read = read(fd, buffer, BUFFER_SIZE);
-        if (bytes_read <= 0)
-        {
-            free(buffer);
-            buffer = NULL;
-            break;
-        }
         buffer[bytes_read] = '\0';
     }
     if (line[0] == '\0')
