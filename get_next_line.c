@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:29:04 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/19 10:09:17 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/19 10:18:17 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*get_next_line(int fd)
                 line = ft_strjoin(line, buffer, i+1);
                 free(temp);
                 char *temp_buffer = buffer;
-                buffer = ft_substr(buffer, i + 1, bytes_read - i - 1);
+                buffer = ft_substr(buffer, i + 1, ft_strlen(buffer)-i);
                 free(temp_buffer);
                 return (line);
             }
