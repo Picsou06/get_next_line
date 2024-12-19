@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:29:04 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/19 10:18:17 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:03:47 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,15 @@ char	*get_next_line(int fd)
     }
     line[0] = '\0';
 
-    if (ft_strlen(buffer) == 0)
+    bytes_read = read(fd, buffer, BUFFER_SIZE);
+    if (bytes_read <= 0)
     {
-        bytes_read = read(fd, buffer, BUFFER_SIZE);
-        if (bytes_read <= 0)
-        {
-            free(buffer);
-            buffer = NULL;
-            free(line);
-            return (NULL);
-        }
-        buffer[bytes_read] = '\0';
+        free(buffer);
+        buffer = NULL;
+        free(line);
+        return (NULL);
     }
+    buffer[bytes_read] = '\0';
     while (bytes_read > 0)
     {
         i = 0;
@@ -60,7 +57,7 @@ char	*get_next_line(int fd)
                 line = ft_strjoin(line, buffer, i+1);
                 free(temp);
                 char *temp_buffer = buffer;
-                buffer = ft_substr(buffer, i + 1, ft_strlen(buffer)-i);
+                buffer = ft_substr(buffer, i + 1, ft_strlen(buffer) - i);
                 free(temp_buffer);
                 return (line);
             }
@@ -70,6 +67,13 @@ char	*get_next_line(int fd)
         line = ft_strjoin(line, buffer, bytes_read);
         free(temp);
         bytes_read = read(fd, buffer, BUFFER_SIZE);
+        if (bytes_read < 0)
+        {
+            free(buffer);
+            buffer = NULL;
+            free(line);
+            return (NULL);
+        }
         buffer[bytes_read] = '\0';
     }
     if (line[0] == '\0')
