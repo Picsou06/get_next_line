@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 18:13:10 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/14 21:17:25 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:06:27 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	i;
 	size_t	j;
 	char	*str;
-
+	printf("size du malloc: %lu", sizeof(*s) * (len + 1));
 	str = (char*)malloc(sizeof(*s) * (len + 1));
 	if (!str)
 		return (NULL);

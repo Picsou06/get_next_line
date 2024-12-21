@@ -6,7 +6,7 @@
 /*   By: evdalmas <evdalmas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:12:19 by evdalmas          #+#    #+#             */
-/*   Updated: 2024/12/14 21:18:09 by evdalmas         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:46:55 by evdalmas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stddef.h>
+#include <stdio.h>
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2, size_t size);
